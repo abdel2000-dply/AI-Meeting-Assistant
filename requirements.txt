@@ -1,3 +1,4 @@
 streamlit
+streamlit-webrtc
 # wit
 # cohere
