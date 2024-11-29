@@ -1,7 +1,13 @@
 import cohere
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # cohere client eith api key
-co = cohere.client()
+API_KEY = os.getenv('COHERE_API')
+co = cohere.Client(API_KEY)
+
 
 # Generate Dareja to-dos from Dareja transciption
 def generate_dareja_todos(transcription_text):
@@ -30,7 +36,7 @@ def generate_dareja_todos(transcription_text):
 
 
 # Function to summarize a Moroccan Darija transcription
-def summarize_darija_with_endpoint(transcription_text):
+def summarize_darija(transcription_text):
     try:
         # Call Cohere's summarize endpoint
         response = co.summarize(
@@ -47,3 +53,27 @@ def summarize_darija_with_endpoint(transcription_text):
         return None
 
 
+if __name__ == "__main__":
+    file_path = "transcription.txt"  # Replace with your file name
+    try:
+        with open(file_path, "r") as file:
+            darija_transcription = file.read()
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+        exit()
+
+    print("=== Generating To-Dos ===")
+    todos = generate_dareja_todos(darija_transcription)
+    if todos:
+        print("To-Dos in Darija:")
+        print(todos)
+    else:
+        print("Failed to generate To-Dos.")
+
+    print("\n=== Generating Summary ===")
+    summary = summarize_darija(darija_transcription)
+    if summary:
+        print("Summary in Darija:")
+        print(summary)
+    else:
+        print("Failed to generate Summary.")
