@@ -1,7 +1,14 @@
 import streamlit as st
 from pathlib import Path
-from utils.transcription import transcribe_file
 import logging
+
+# Lazy load the transcription function
+@st.cache_resource
+def load_transcription_module():
+    from utils.transcription import transcribe_file
+    return transcribe_file
+
+transcribe_file = load_transcription_module()
 
 st.title("🎙️ Record Audio")
 st.subheader("Record a voice message for transcription")
@@ -28,7 +35,7 @@ if audio_value:
         st.info("Processing the recorded audio...")
         logging.info("Processing the recorded audio...")
         # Transcribe the recorded audio
-        transcript_path = transcribe_file(temp_recorded_audio_path, language_sign)
+        transcript_path = transcribe_file(temp_recorded_audio_path, language_sign, output_file_name="transcript.txt")
 
         if transcript_path and transcript_path.exists():
             with open(transcript_path, "r") as f:
