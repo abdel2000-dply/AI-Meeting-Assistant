@@ -1,14 +1,10 @@
 import logging
-import streamlit as st
-from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, WebRtcMode
-import numpy as np
 import os
+import streamlit as st
 from pathlib import Path
 from dotenv import load_dotenv
 from collections import deque
 from tafrigh import Config, TranscriptType, farrigh
-from tafrigh.recognizers.wit_recognizer import WitRecognizer
-import subprocess
 from pydub import AudioSegment
 
 # Set up logging
@@ -88,6 +84,10 @@ def transcribe_file(file_path, language_sign):
 st.title("AI Meeting Assistant")
 st.subheader("Summarizing meetings, effortlessly!")
 
+# Initialize session state
+if 'transcript' not in st.session_state:
+    st.session_state.transcript = ""
+
 # File upload
 uploaded_file = st.file_uploader("Upload your meeting audio", type=["mp3", "wav"])
 
@@ -112,56 +112,46 @@ if uploaded_file:
         transcript_path = transcribe_file(temp_file_path, language_sign)
         if transcript_path:
             with open(transcript_path, "r") as f:
-                summary = f.read()
-            st.text_area("Meeting Summary", summary, height=200)
-            st.download_button(
-                label="Download Summary",
-                data=summary,
-                file_name="meeting_summary.txt",
-                mime="text/plain"
-            )
+                st.session_state.transcript = f.read()
+            st.success("Transcription completed.")
         else:
             st.error("Transcription failed. Please check the logs for more details.")
             logging.error("Transcription failed. Please check the logs for more details.")
 
-# Live audio recording and processing
-class AudioProcessor(AudioProcessorBase):
-    def __init__(self):
-        self.sample_rate = 16000
+# Display the transcript if available
+if st.session_state.transcript:
+    st.text_area("Meeting Summary", st.session_state.transcript, height=200)
+    st.download_button(
+        label="Download Summary",
+        data=st.session_state.transcript,
+        file_name="meeting_summary.txt",
+        mime="text/plain"
+    )
 
-    def recv(self, frame):
-        audio_data = frame.to_ndarray()
-        # Process the audio data here
-        # For now, we'll just return the same audio data
-        return frame
+# Audio recording
+audio_value = st.audio_input("Record a voice message")
 
-webrtc_ctx = webrtc_streamer(
-    key="audio",
-    mode=WebRtcMode.SENDRECV,
-    audio_processor_factory=AudioProcessor,
-    media_stream_constraints={"audio": True, "video": False},
-    async_processing=True,
-)
+if audio_value:
+    st.audio(audio_value)
+    # Save the recorded audio to a temporary file
+    temp_recorded_audio_path = Path("temp_recorded_audio.wav")
+    with open(temp_recorded_audio_path, "wb") as f:
+        f.write(audio_value.getbuffer())
+    logging.info(f"Saved recorded audio: {temp_recorded_audio_path}")
 
-if webrtc_ctx.audio_receiver:
-    audio_frames = webrtc_ctx.audio_receiver.get_frames(timeout=1)
-    if audio_frames:
-        st.info("Processing live audio...")
-        logging.info("Processing live audio...")
-        # Save the live audio frames to a temporary file
-        temp_live_audio_path = Path("temp_live_audio.wav")
-        with open(temp_live_audio_path, "wb") as f:
-            for frame in audio_frames:
-                f.write(frame.to_ndarray().tobytes())
-        logging.info(f"Saved live audio to: {temp_live_audio_path}")
+    # Select the language before starting processing
+    language_sign = st.selectbox("Select the language for recorded audio", options=["EN", "AR", "FR"])
 
-        # Transcribe the live audio
-        language_sign = st.selectbox("Select the language for live audio", options=["EN", "AR", "FR"])
-        live_transcript_path = transcribe_file(temp_live_audio_path, language_sign)
-        if live_transcript_path:
-            with open(live_transcript_path, "r") as f:
-                live_summary = f.read()
-            st.text_area("Live Meeting Summary", live_summary, height=200)
+    # Add a button to start processing the recorded audio
+    if st.button("Start Processing Recorded Audio"):
+        st.info("Processing the recorded audio...")
+        logging.info("Processing the recorded audio...")
+        # Transcribe the recorded audio
+        recorded_transcript_path = transcribe_file(temp_recorded_audio_path, language_sign)
+        if recorded_transcript_path:
+            with open(recorded_transcript_path, "r") as f:
+                st.session_state.transcript = f.read()
+            st.success("Recorded audio transcription completed.")
         else:
-            st.error("Live transcription failed. Please check the logs for more details.")
-            logging.error("Live transcription failed. Please check the logs for more details.")
+            st.error("Recorded audio transcription failed. Please check the logs for more details.")
+            logging.error("Recorded audio transcription failed. Please check the logs for more details.")
