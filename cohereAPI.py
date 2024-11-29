@@ -1,15 +1,15 @@
 import cohere
 from dotenv import load_dotenv
+import os
 
 # Load environment variables from .env file
 load_dotenv()
 
-# cohere client eith api key
+# Cohere client with API key
 API_KEY = os.getenv('COHERE_API')
 co = cohere.Client(API_KEY)
 
-
-# Generate Dareja to-dos from Dareja transciption
+# Generate Dareja to-dos from Dareja transcription
 def generate_dareja_todos(transcription_text):
     # Define the prompt in Moroccan Dareja
     prompt = f"""خذ النص التالي المقتبس من اجتماع باللغة الدارجة المغربية، وحول الكلام إلى لائحة ديال المهام اللي خاص يتدار. 
@@ -34,7 +34,6 @@ def generate_dareja_todos(transcription_text):
         print("Error generating to-dos:", e)
         return None
 
-
 # Function to summarize a Moroccan Darija transcription
 def summarize_darija(transcription_text):
     try:
@@ -51,7 +50,6 @@ def summarize_darija(transcription_text):
     except Exception as e:
         print("Error using co.summarize:", e)
         return None
-
 
 if __name__ == "__main__":
     file_path = "transcription.txt"  # Replace with your file name
