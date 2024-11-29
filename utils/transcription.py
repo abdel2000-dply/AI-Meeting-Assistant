@@ -18,7 +18,7 @@ LANGUAGE_API_KEYS = {
     'FR': os.getenv('WIT_API_KEY_FRENCH'),
 }
 
-def transcribe_file(file_path, language_sign):
+def transcribe_file(file_path, language_sign, output_file_name):
     logging.info(f"Starting transcription for file: {file_path} with language: {language_sign}")
     
     wit_api_key = LANGUAGE_API_KEYS.get(language_sign.upper())
@@ -58,7 +58,13 @@ def transcribe_file(file_path, language_sign):
         progress = deque(farrigh(config), maxlen=0)  # Using farrigh to transcribe
         logging.info("Transcription process completed successfully.")
         
-        return file_path.with_suffix('.txt')  # Return the path to the generated transcript
+        # Rename the output file to the desired name
+        output_file_path = file_path.parent / output_file_name
+        generated_file_path = file_path.with_suffix('.txt')
+        if generated_file_path.exists():
+            generated_file_path.rename(output_file_path)
+        
+        return output_file_path  # Return the path to the generated transcript
     except Exception as e:
         logging.error(f"Error during transcription: {e}")
         return None
