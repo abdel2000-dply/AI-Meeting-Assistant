@@ -28,3 +28,22 @@ def generate_dareja_todos(transcription_text):
         print("Error generating to-dos:", e)
         return None
 
+
+# Function to summarize a Moroccan Darija transcription
+def summarize_darija_with_endpoint(transcription_text):
+    try:
+        # Call Cohere's summarize endpoint
+        response = co.summarize(
+            text=transcription_text,
+            length="medium",
+            format="bullets",
+            model="command-r-plus-08-2024",
+            temperature=0.5,
+        )
+        # Return the generated summary
+        return response.summary
+    except Exception as e:
+        print("Error using co.summarize:", e)
+        return None
+
+
