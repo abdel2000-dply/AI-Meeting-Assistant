@@ -114,7 +114,7 @@ def summarize_text(transcription_text, lang):
         return None
 
 # Function to chat with Cohere
-def chat_with_cohere(message, context):
+def chat_with_cohere(message, context, transcript_language):
     headers = {
         "Authorization": f"BEARER {API_KEY}",
         "Content-Type": "application/json",
@@ -123,7 +123,7 @@ def chat_with_cohere(message, context):
     # Limit the length of the transcript included in the context
     transcript_excerpt = context['transcript'][:2000]  # Adjust the length as needed
 
-    preamble = f"""You are an AI assistant helping summarize and analyze a meeting transcript. The user will ask questions about the transcript provided. Here is the transcript: {transcript_excerpt}. Respond clearly and concisely based on the user's query."""
+    preamble = f"""You are an AI assistant helping summarize and analyze a meeting transcript. The user will ask questions about the transcript provided. Here is the transcript: {transcript_excerpt}. Respond clearly and concisely in {transcript_language} based on the user's query."""
 
     prompt = preamble + "\n\n" + message
 
