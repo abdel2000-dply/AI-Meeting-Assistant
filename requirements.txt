@@ -4,7 +4,7 @@ cohere
 python-dotenv
 pydub==0.25.1
 ffmpeg-python==0.2.0
-tafrigh==1.1.3
+tafrigh[wit]==1.1.3
 requests==2.31.0
 pandas==2.2.3
 numpy==1.23.5
