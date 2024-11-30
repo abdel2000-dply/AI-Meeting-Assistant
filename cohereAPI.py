@@ -6,7 +6,7 @@ import os
 load_dotenv()
 
 # Cohere client with API key
-API_KEY = os.getenv("COHERE_API")
+API_KEY = os.getenv("COHERE_API_KEY")
 co = cohere.Client(API_KEY)
 
 # Generate to-dos from transcription
