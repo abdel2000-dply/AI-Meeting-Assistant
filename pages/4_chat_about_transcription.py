@@ -35,14 +35,15 @@ if "transcript" in st.session_state and st.session_state.transcript:
         if user_input:
             # Set the typing indicator to True
             st.session_state.is_typing = True
-            st.rerun()  # Using st.rerun() explicitly
+            st.experimental_rerun()
 
             context = {
                 "transcript": st.session_state.transcript,
-                "chat_history": st.session_state.chat_history
+                "chat_history": st.session_state.chat_history,
+                "language_sign": st.session_state.language_sign
             }
             
-            response = chat_with_cohere(user_input, context, st.session_state.transcript_language)
+            response = chat_with_cohere(user_input, context, st.session_state.language_sign)
 
             if response:
                 # Add user input and chatbot response to history
@@ -54,7 +55,7 @@ if "transcript" in st.session_state and st.session_state.transcript:
                 
             # Set typing indicator to False
             st.session_state.is_typing = False
-            st.rerun()  # Using st.rerun() explicitly
+            st.experimental_rerun()
 
     # Display chat history with new bubble layout
     display_chat_history()
@@ -62,7 +63,7 @@ if "transcript" in st.session_state and st.session_state.transcript:
     # Option to clear chat history
     if st.button("Clear Chat History"):
         st.session_state.chat_history.clear()
-        st.rerun()  # Using st.rerun() explicitly
+        st.experimental_rerun()
 
 else:
     st.info("No transcription results available. Please upload or record audio first.")
