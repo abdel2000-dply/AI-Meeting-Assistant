@@ -9,7 +9,7 @@ AI Meeting Assistant is a Streamlit-based web application that allows users to u
 - **Transcription**: Transcribe audio files using Wit.ai.
 - **Summarization**: Summarize transcribed text using the Cohere API.
 - **To-Do List Generation**: Generate to-do lists from transcribed text using the Cohere API.
-- **Multi-Language Support**: Supports English, Arabic, and French.
+- **Multi-Language Support**: Supports English, Arabic(& Moroccan Darija), and French.
 
 ## Installation
 
