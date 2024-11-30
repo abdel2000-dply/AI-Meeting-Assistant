@@ -60,7 +60,7 @@ Réponse :
 
 
 # Function to summarize a Moroccan Darija transcription
-def summarize_text(transcription_text, lang):
+def summarize_text(transcription_text):
     try:
         # Call Cohere's summarize endpoint
         response = co.summarize(
@@ -87,7 +87,7 @@ if __name__ == "__main__":
         exit()
 
     print("=== Generating To-Dos ===")
-    todos = generate_todos(darija_transcription)
+    todos = generate_todos(darija_transcription, "AR")
     if todos:
         print("To-Dos in Darija:")
         print(todos)
