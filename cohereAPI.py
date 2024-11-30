@@ -6,19 +6,43 @@ import os
 load_dotenv()
 
 # Cohere client with API key
-API_KEY = os.getenv('COHERE_API')
+API_KEY = os.getenv("COHERE_API")
 co = cohere.Client(API_KEY)
 
+
 # Generate Dareja to-dos from Dareja transcription
-def generate_dareja_todos(transcription_text):
-    # Define the prompt in Moroccan Dareja
-    prompt = f"""خذ النص التالي المقتبس من اجتماع باللغة الدارجة المغربية، وحول الكلام إلى لائحة ديال المهام اللي خاص يتدار. 
+def generate_todos(transcription_text, lang):
+    # Define the prompt based on the lang
+    if lang == "AR":
+        prompt = f"""خذ النص التالي المقتبس من اجتماع باللغة الدارجة المغربية، وحول الكلام إلى لائحة ديال المهام اللي خاص يتدار. 
 اللائحة خاصها تكون مختصرة وكتبت بالدارجة المغربية، وكل مهمة تبدا بسطر جديد:
 
 النص:
 "{transcription_text}"
 
 الجواب:"""
+    elif lang == "EN":
+        prompt = f"""Take the following text transcribed from a meeting in English and turn it into a to-do list. 
+The list should be concise and written in clear English. Each task should start on a new line:
+
+Text:
+"{transcription_text}"
+
+Response:
+"""
+    elif lang == "FR":
+        prompt = f"""Prenez le texte suivant transcrit d'une réunion en français et transformez-le en une liste de tâches à accomplir. 
+La liste doit être concise et écrite en français clair. Chaque tâche doit commencer sur une nouvelle ligne :
+
+Texte :
+"{transcription_text}"
+
+Réponse :
+"""
+    else:
+        raise ValueError("Unsupported language")
+        exit()
+
     try:
         # Call Cohere's generate endpoint
         response = co.generate(
@@ -34,8 +58,9 @@ def generate_dareja_todos(transcription_text):
         print("Error generating to-dos:", e)
         return None
 
+
 # Function to summarize a Moroccan Darija transcription
-def summarize_darija(transcription_text):
+def summarize_text(transcription_text, lang):
     try:
         # Call Cohere's summarize endpoint
         response = co.summarize(
@@ -51,8 +76,9 @@ def summarize_darija(transcription_text):
         print("Error using co.summarize:", e)
         return None
 
+
 if __name__ == "__main__":
-    file_path = "transcription.txt"  # Replace with your file name
+    file_path = "transcription.txt"
     try:
         with open(file_path, "r") as file:
             darija_transcription = file.read()
@@ -61,7 +87,7 @@ if __name__ == "__main__":
         exit()
 
     print("=== Generating To-Dos ===")
-    todos = generate_dareja_todos(darija_transcription)
+    todos = generate_todos(darija_transcription)
     if todos:
         print("To-Dos in Darija:")
         print(todos)
@@ -69,7 +95,7 @@ if __name__ == "__main__":
         print("Failed to generate To-Dos.")
 
     print("\n=== Generating Summary ===")
-    summary = summarize_darija(darija_transcription)
+    summary = summarize_text(darija_transcription)
     if summary:
         print("Summary in Darija:")
         print(summary)
