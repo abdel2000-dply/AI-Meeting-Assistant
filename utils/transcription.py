@@ -3,6 +3,7 @@
 import logging
 import os
 from pathlib import Path
+from tafrigh import Config, farrigh, TranscriptType
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -23,7 +24,6 @@ def transcribe_file(file_path, language_sign, output_file_name):
         raise ValueError(f"API key not found for language: {language_sign}")
 
     # Import heavy libraries inside the function
-    from tafrigh import Config, farrigh, TranscriptType
     from collections import deque
     from utils.audio_processing import convert_mp3_to_wav
     from pydub import AudioSegment
