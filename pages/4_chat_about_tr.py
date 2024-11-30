@@ -21,7 +21,7 @@ if "transcript" in st.session_state and st.session_state.transcript:
                 "transcript": st.session_state.transcript,
                 "chat_history": st.session_state.chat_history
             }
-            response = chat_with_cohere(user_input, context)
+            response = chat_with_cohere(user_input, context, st.session_state.language_sign)
             if response:
                 st.session_state.chat_history.append({"role": "user", "content": user_input})
                 st.session_state.chat_history.append({"role": "chatbot", "content": response})
