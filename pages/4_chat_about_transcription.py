@@ -2,6 +2,9 @@ import streamlit as st
 from cohereAPI import chat_with_cohere
 import warnings
 
+# Suppress the specific deprecation warning for st.experimental_set_query_params
+warnings.filterwarnings("ignore", category=DeprecationWarning, message="st.experimental_set_query_params")
+
 st.title("💬 Chat About Your Meeting")
 st.subheader("Ask questions about your meeting transcript")
 
@@ -17,9 +20,9 @@ if "is_typing" not in st.session_state:
 def display_chat_history():
     for entry in st.session_state.chat_history:
         if entry["role"] == "user":
-            st.markdown(f'<div style="text-align: left; background-color: #E1FFC7; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 5px; margin-left: 5px;">{entry["content"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align: left; background-color: #ADD8E6; color: black; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 5px; margin-left: 5px;">{entry["content"]}</div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div style="text-align: right; background-color: #F0F0F0; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 5px; margin-right: 5px;">{entry["content"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align: right; background-color: #D3D3D3; color: black; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 5px; margin-right: 5px;">{entry["content"]}</div>', unsafe_allow_html=True)
 
 # Display the transcript if available
 if "transcript" in st.session_state and st.session_state.transcript:
@@ -36,9 +39,7 @@ if "transcript" in st.session_state and st.session_state.transcript:
         if user_input:
             # Set the typing indicator to True
             st.session_state.is_typing = True
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                st.experimental_set_query_params(typing="true")
+            st.experimental_set_query_params(typing="true")
 
             context = {
                 "transcript": st.session_state.transcript,
@@ -58,9 +59,7 @@ if "transcript" in st.session_state and st.session_state.transcript:
                 
             # Set typing indicator to False
             st.session_state.is_typing = False
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                st.experimental_set_query_params(typing="false")
+            st.experimental_set_query_params(typing="false")
 
     # Display chat history with new bubble layout
     display_chat_history()
@@ -68,9 +67,7 @@ if "transcript" in st.session_state and st.session_state.transcript:
     # Option to clear chat history
     if st.button("Clear Chat History"):
         st.session_state.chat_history.clear()
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            st.experimental_set_query_params(clear="true")
+        st.experimental_set_query_params(clear="true")
 
 else:
     st.info("No transcription results available. Please upload or record audio first.")
