@@ -76,29 +76,32 @@ def summarize_text(transcription_text, lang):
     try:
         # Define the model and language-specific parameters
         if lang == "AR":
-            prompt = f"""لخص النص التالي المستخلص من اجتماع مكتوب بالدارجة المغربية. 
-يرجى كتابة الملخص بشكل مختصر وواضح مع التركيز على الأفكار الرئيسية.
+            # Moroccan Arabic (Darija) Summary Prompt
+            prompt = f"""لخص النص التالي المأخوذ من اجتماع مكتوب بالدارجة المغربية. 
+    خاص الملخص يكون واضح ومختصر، وكيهضر على الأفكار الرئيسية بلا دخول فالتفاصيل اللي ماشي ضرورية.
 
-النص:
-"{transcription_text}"
+    النص:
+    "{transcription_text}"
 
-الملخص:"""
+    الملخص:"""
         elif lang == "EN":
+            # English Summary Prompt
             prompt = f"""Summarize the following text transcribed from a meeting in English. 
-Focus on the main points and ensure the summary is concise and clear.
+    Focus on the main points and ensure the summary is concise and clear.
 
-Text:
-"{transcription_text}"
+    Text:
+    "{transcription_text}"
 
-Summary:"""
+    Summary:"""
         elif lang == "FR":
+            # French Summary Prompt
             prompt = f"""Résumez le texte suivant transcrit d'une réunion en français. 
-Veuillez rédiger un résumé clair et concis en mettant en avant les idées principales.
+    Veuillez rédiger un résumé clair et concis en mettant en avant les idées principales.
 
-Texte :
-"{transcription_text}"
+    Texte :
+    "{transcription_text}"
 
-Résumé :"""
+    Résumé :"""
         else:
             raise ValueError("Unsupported language")
             return None
