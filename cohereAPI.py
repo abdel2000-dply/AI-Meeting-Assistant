@@ -63,28 +63,39 @@ def summarize_text(transcription_text, lang):
         # Define the model and language-specific parameters
         if lang == "AR":
             model = "command-r-plus-08-2024"
-            language = "arabic"
+            prompt = f"""لخص النص التالي المقتبس من اجتماع باللغة الدارجة المغربية. 
+النص:
+"{transcription_text}"
+
+الملخص:"""
         elif lang == "EN":
             model = "command-r-plus-08-2024"
-            language = "english"
+            prompt = f"""Summarize the following text transcribed from a meeting in English. 
+Text:
+"{transcription_text}"
+
+Summary:"""
         elif lang == "FR":
             model = "command-fr-plus-08-2024"
-            language = "french"
+            prompt = f"""Résumez le texte suivant transcrit d'une réunion en français. 
+Texte :
+"{transcription_text}"
+
+Résumé:"""
         else:
             raise ValueError("Unsupported language")
             return None
 
-        # Call Cohere's summarize endpoint with language-specific parameters
-        response = co.summarize(
-            text=transcription_text,
-            length="medium",
-            format="bullets",
+        # Call Cohere's generate endpoint with language-specific parameters
+        response = co.generate(
             model=model,
-            language=language,
+            prompt=prompt,
+            max_tokens=400,
             temperature=0.5,
         )
         # Return the generated summary
-        return response.summary
+        summary = response.generations[0].text.strip()
+        return summary
     except Exception as e:
         print(f"Error using co.summarize for {lang}: {e}")
         return None
