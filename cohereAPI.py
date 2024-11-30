@@ -120,6 +120,13 @@ def chat_with_cohere(message, context, transcript_language):
         "Content-Type": "application/json",
     }
 
+    if transcript_language == "AR":
+        transcript_language = "Moroccan Arabic (Darija)"
+    elif transcript_language == "EN":
+        transcript_language = "English"
+    elif transcript_language == "FR":
+        transcript_language = "French"
+
     # Limit the length of the transcript included in the context
     transcript_excerpt = context['transcript'][:2000]  # Adjust the length as needed
 
@@ -127,10 +134,13 @@ def chat_with_cohere(message, context, transcript_language):
 
     prompt = preamble + "\n\n" + message
 
+    chat_history = [{"role": entry["role"], "message": entry["content"]} for entry in context.get("chat_history", [])]
+
+
     data = {
         "model": "command-r-plus-08-2024",
         "message": message + "\n\n" + "Response with" + transcript_language,
-        "chat_history": context.get("chat_history", []),
+        "chat_history": chat_history,
         "max_tokens": 100,  # Set a lower value for shorter responses
         "temperature": 0.2,  # Lower temperature for more direct responses
         "context": preamble,
