@@ -32,6 +32,7 @@ if uploaded_file:
         if transcript_path:
             with open(transcript_path, "r") as f:
                 st.session_state.transcript = f.read()
+            st.session_state.language_sign = language_sign  # Save the language in session state
             st.success("Transcription completed.")
         else:
             st.error("Transcription failed.")
