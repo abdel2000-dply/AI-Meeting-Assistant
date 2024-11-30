@@ -9,8 +9,7 @@ load_dotenv()
 API_KEY = os.getenv("COHERE_API")
 co = cohere.Client(API_KEY)
 
-
-# Generate Dareja to-dos from Dareja transcription
+# Generate to-dos from transcription
 def generate_todos(transcription_text, lang):
     # Define the prompt based on the lang
     if lang == "AR":
@@ -58,9 +57,8 @@ Réponse :
         print("Error generating to-dos:", e)
         return None
 
-
-# Function to summarize a Moroccan Darija transcription
-def summarize_text(transcription_text):
+# Function to summarize transcription
+def summarize_text(transcription_text, lang):
     try:
         # Call Cohere's summarize endpoint
         response = co.summarize(
@@ -76,28 +74,28 @@ def summarize_text(transcription_text):
         print("Error using co.summarize:", e)
         return None
 
-
 if __name__ == "__main__":
     file_path = "transcription.txt"
     try:
         with open(file_path, "r") as file:
-            darija_transcription = file.read()
+            transcription = file.read()
     except FileNotFoundError:
         print(f"File not found: {file_path}")
         exit()
 
+    lang = "AR"  # Example language
     print("=== Generating To-Dos ===")
-    todos = generate_todos(darija_transcription, "AR")
+    todos = generate_todos(transcription, lang)
     if todos:
-        print("To-Dos in Darija:")
+        print("To-Dos:")
         print(todos)
     else:
         print("Failed to generate To-Dos.")
 
     print("\n=== Generating Summary ===")
-    summary = summarize_text(darija_transcription)
+    summary = summarize_text(transcription, lang)
     if summary:
-        print("Summary in Darija:")
+        print("Summary:")
         print(summary)
     else:
         print("Failed to generate Summary.")
