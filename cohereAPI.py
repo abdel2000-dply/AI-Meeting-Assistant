@@ -134,13 +134,13 @@ def chat_with_cohere(message, context, transcript_language):
 
     prompt = preamble + "\n\n" + message
 
-    chat_history = [{"role": entry["role"], "message": entry["content"]} for entry in context.get("chat_history", [])]
-
+    # Limit the chat history to the last 5 messages
+    limited_chat_history = context.get("chat_history", [])[-5:]
 
     data = {
         "model": "command-r-plus-08-2024",
-        "message": message + "\n\n" + "Response with" + transcript_language,
-        "chat_history": chat_history,
+        "message": message,
+        "chat_history": [{"role": entry["role"], "content": entry["content"], "message": entry["content"]} for entry in limited_chat_history],
         "max_tokens": 100,  # Set a lower value for shorter responses
         "temperature": 0.2,  # Lower temperature for more direct responses
         "context": preamble,
