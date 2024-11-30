@@ -16,9 +16,9 @@ if "is_typing" not in st.session_state:
 def display_chat_history():
     for entry in st.session_state.chat_history:
         if entry["role"] == "user":
-            st.markdown(f'<div style="text-align: left; background-color: #DCF8C6; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 5px; margin-left: 5px;">{entry["content"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align: left; background-color: #E1FFC7; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 5px; margin-left: 5px;">{entry["content"]}</div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div style="text-align: right; background-color: #f1f0f0; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 5px; margin-right: 5px;">{entry["content"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align: right; background-color: #F0F0F0; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 5px; margin-right: 5px;">{entry["content"]}</div>', unsafe_allow_html=True)
 
 # Display the transcript if available
 if "transcript" in st.session_state and st.session_state.transcript:
@@ -35,7 +35,7 @@ if "transcript" in st.session_state and st.session_state.transcript:
         if user_input:
             # Set the typing indicator to True
             st.session_state.is_typing = True
-            st.experimental_set_query_params(typing="true")
+            st.set_query_params(typing="true")
 
             context = {
                 "transcript": st.session_state.transcript,
@@ -55,7 +55,7 @@ if "transcript" in st.session_state and st.session_state.transcript:
                 
             # Set typing indicator to False
             st.session_state.is_typing = False
-            st.experimental_set_query_params(typing="false")
+            st.set_query_params(typing="false")
 
     # Display chat history with new bubble layout
     display_chat_history()
@@ -63,7 +63,7 @@ if "transcript" in st.session_state and st.session_state.transcript:
     # Option to clear chat history
     if st.button("Clear Chat History"):
         st.session_state.chat_history.clear()
-        st.experimental_set_query_params(clear="true")
+        st.set_query_params(clear="true")
 
 else:
     st.info("No transcription results available. Please upload or record audio first.")
