@@ -2,12 +2,8 @@
 
 import logging
 import os
-from tafrigh import Config, farrigh, TranscriptType
 from pathlib import Path
-from collections import deque
-from utils.audio_processing import convert_mp3_to_wav
 from dotenv import load_dotenv
-from pydub import AudioSegment
 
 # Load environment variables from .env file
 load_dotenv()
@@ -25,6 +21,12 @@ def transcribe_file(file_path, language_sign, output_file_name):
     if not wit_api_key:
         logging.error(f"API key not found for language: {language_sign}")
         raise ValueError(f"API key not found for language: {language_sign}")
+
+    # Import heavy libraries inside the function
+    from tafrigh import Config, farrigh, TranscriptType
+    from collections import deque
+    from utils.audio_processing import convert_mp3_to_wav
+    from pydub import AudioSegment
 
     # Convert MP3 to WAV if the file is an MP3
     if file_path.suffix == '.mp3':
