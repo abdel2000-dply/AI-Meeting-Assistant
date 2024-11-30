@@ -1,5 +1,6 @@
 import streamlit as st
 from cohereAPI import chat_with_cohere
+import warnings
 
 st.title("💬 Chat About Your Meeting")
 st.subheader("Ask questions about your meeting transcript")
@@ -35,7 +36,9 @@ if "transcript" in st.session_state and st.session_state.transcript:
         if user_input:
             # Set the typing indicator to True
             st.session_state.is_typing = True
-            st.set_query_params(typing="true")
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                st.experimental_set_query_params(typing="true")
 
             context = {
                 "transcript": st.session_state.transcript,
@@ -55,7 +58,9 @@ if "transcript" in st.session_state and st.session_state.transcript:
                 
             # Set typing indicator to False
             st.session_state.is_typing = False
-            st.set_query_params(typing="false")
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                st.experimental_set_query_params(typing="false")
 
     # Display chat history with new bubble layout
     display_chat_history()
@@ -63,7 +68,9 @@ if "transcript" in st.session_state and st.session_state.transcript:
     # Option to clear chat history
     if st.button("Clear Chat History"):
         st.session_state.chat_history.clear()
-        st.set_query_params(clear="true")
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            st.experimental_set_query_params(clear="true")
 
 else:
     st.info("No transcription results available. Please upload or record audio first.")
