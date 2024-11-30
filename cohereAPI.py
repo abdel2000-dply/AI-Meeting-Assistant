@@ -123,12 +123,13 @@ def chat_with_cohere(message, context, transcript_language):
     # Limit the length of the transcript included in the context
     transcript_excerpt = context['transcript'][:2000]  # Adjust the length as needed
 
-    preamble = f"""You are an AI assistant helping summarize and analyze a meeting transcript. The user will ask questions about the transcript provided. Here is the transcript: {transcript_excerpt}. Respond clearly and concisely in {transcript_language} based on the user's query."""
+    preamble = f"""You are an AI assistant helping summarize and analyze a meeting transcript. The user will ask questions about the transcript provided. Here is the transcript: {transcript_excerpt}. Respond clearly and concisely in {transcript_language} and based on the user's query."""
 
     prompt = preamble + "\n\n" + message
 
     data = {
-        "message": message,
+        "model": "command-r-plus-08-2024",
+        "message": message + "\n\n" + "Response with" + transcript_language,
         "chat_history": context.get("chat_history", []),
         "max_tokens": 100,  # Set a lower value for shorter responses
         "temperature": 0.2,  # Lower temperature for more direct responses
