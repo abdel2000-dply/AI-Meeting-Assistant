@@ -60,18 +60,33 @@ Réponse :
 # Function to summarize transcription
 def summarize_text(transcription_text, lang):
     try:
-        # Call Cohere's summarize endpoint
+        # Define the model and language-specific parameters
+        if lang == "AR":
+            model = "command-r-plus-08-2024"
+            language = "arabic"
+        elif lang == "EN":
+            model = "command-r-plus-08-2024"
+            language = "english"
+        elif lang == "FR":
+            model = "command-fr-plus-08-2024"
+            language = "french"
+        else:
+            raise ValueError("Unsupported language")
+            return None
+
+        # Call Cohere's summarize endpoint with language-specific parameters
         response = co.summarize(
             text=transcription_text,
             length="medium",
             format="bullets",
-            model="command-r-plus-08-2024",
+            model=model,
+            language=language,
             temperature=0.5,
         )
         # Return the generated summary
         return response.summary
     except Exception as e:
-        print("Error using co.summarize:", e)
+        print(f"Error using co.summarize for {lang}: {e}")
         return None
 
 if __name__ == "__main__":
