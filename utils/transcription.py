@@ -52,7 +52,7 @@ def transcribe_file(file_path, language_sign, output_file_name):
             save_files_before_compact=False,
             save_yt_dlp_responses=False,
             output_sample=0,
-            output_formats=[TranscriptType.TXT, TranscriptType.SRT],
+            output_formats=[TranscriptType.TXT],
             output_dir=str(file_path.parent),  # Output directory for transcriptions
         )
 
