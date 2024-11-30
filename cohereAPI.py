@@ -78,12 +78,12 @@ def summarize_text(transcription_text, lang):
         if lang == "AR":
             # Moroccan Arabic (Darija) Summary Prompt
             prompt = f"""لخص النص التالي المأخوذ من اجتماع مكتوب بالدارجة المغربية. 
-    خاص الملخص يكون واضح ومختصر، وكيهضر على الأفكار الرئيسية بلا دخول فالتفاصيل اللي ماشي ضرورية.
+خاص الملخص يكون واضح ومختصر، وكيهضر على الأفكار الرئيسية اللي تطرقات ليها الاجتماع بلا تقديم ولا كلام زائد.
 
-    النص:
-    "{transcription_text}"
+النص:
+"{transcription_text}"
 
-    الملخص:"""
+الملخص:"""
         elif lang == "EN":
             # English Summary Prompt
             prompt = f"""Summarize the following text transcribed from a meeting in English. 
