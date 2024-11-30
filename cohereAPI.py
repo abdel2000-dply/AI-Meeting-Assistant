@@ -13,8 +13,9 @@ co = cohere.Client(API_KEY)
 def generate_todos(transcription_text, lang):
     # Define the prompt based on the language
     if lang == "AR":
-        prompt = f"""خذ النص التالي المقتبس من اجتماع مكتوب بالدارجة المغربية، وحوله إلى قائمة بالخطوات القادمة التي يجب القيام بها بعد الاجتماع. 
-يرجى أن تكون كل خطوة واضحة وقابلة للتنفيذ، مع التركيز على ما يجب إنجازه بدلاً من ما تمت مناقشته.
+        prompt = f"""خذ النص التالي المقتبس من اجتماع مكتوب بالدارجة المغربية، وحوله إلى لائحة ديال المهام اللي خاص يتدارو بعد الاجتماع. 
+خاص كل خطوة تكون واضحة وسهلة للتنفيذ، مع ذكر شكون المسؤول على كل خطوة إلى كان ممكن، وزيد وقت محدد لإنجازها إلا كانت ضرورية.
+تجنب تكرار المهام اللي راهي تدارو فالاجتماع.
 
 النص:
 "{transcription_text}"
@@ -34,7 +35,11 @@ Text:
 Response:"""
     elif lang == "FR":
         prompt = f"""Prenez le texte suivant, transcription d'une réunion en français, et transformez-le en une liste d'actions de suivi à réaliser après la réunion. 
-Chaque tâche doit être spécifique, réalisable et écrite en langage clair. Concentrez-vous sur ce qui doit être fait, et non sur ce qui a été discuté.
+Chaque tâche doit :
+- Se concentrer sur des étapes concrètes à effectuer après la réunion.
+- Indiquer la personne responsable de chaque tâche si possible.
+- Inclure des échéances ou des délais lorsqu'ils sont pertinents.
+- Éviter de répéter les tâches déjà accomplies pendant la réunion.
 
 Texte :
 "{transcription_text}"
