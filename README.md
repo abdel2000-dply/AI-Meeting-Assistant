@@ -10,6 +10,7 @@ AI Meeting Assistant is a Streamlit-based web application that allows users to u
 - **Summarization**: Summarize transcribed text using the Cohere API.
 - **To-Do List Generation**: Generate to-do lists from transcribed text using the Cohere API.
 - **Multi-Language Support**: Supports English, Arabic(& Moroccan Darija), and French.
+- **Chat with Transcript**: Ask questions about your meeting transcript and get responses using the Cohere API.
 
 ## Installation
 
@@ -81,3 +82,6 @@ AI Meeting Assistant is a Streamlit-based web application that allows users to u
 - **requirements.txt**: List of dependencies.
 - **README.md**: Project documentation.
 
+## Requirements
+
+- Python 3.11
