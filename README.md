@@ -84,4 +84,4 @@ MajlisAI(AI Meeting Assistant) is a Streamlit-based web application that allows 
 
 ## Requirements
 
-- Python 3.11
+- Python 3.10
