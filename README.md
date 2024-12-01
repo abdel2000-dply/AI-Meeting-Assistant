@@ -1,6 +1,6 @@
 # AI Meeting Assistant
 
-AI Meeting Assistant is a Streamlit-based web application that allows users to upload or record audio from meetings, transcribe the audio using Wit.ai, and generate summaries and to-do lists using the Cohere API. The application supports multiple languages, including English, Arabic, and French.
+MajlisAI(AI Meeting Assistant) is a Streamlit-based web application that allows users to upload or record audio from meetings, transcribe the audio using Wit.ai, and generate summaries and to-do lists using the Cohere API. The application supports multiple languages, including English, Arabic, and French.
 
 ## Features
 
