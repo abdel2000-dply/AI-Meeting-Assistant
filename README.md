@@ -81,6 +81,3 @@ AI Meeting Assistant is a Streamlit-based web application that allows users to u
 - **requirements.txt**: List of dependencies.
 - **README.md**: Project documentation.
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
